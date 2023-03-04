@@ -34,8 +34,8 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Home'),
         ),
-        body: Column(
-          children: const [OrderView()],
+        body: const Column(
+          children: [OrderView()],
         ),
       ),
     );

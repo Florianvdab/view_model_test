@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:view_model_test/model/item.dart';
 import 'package:view_model_test/viewmodel/order_view_model.dart';
+
+import '../model/order.dart';
 
 class OrderView extends StatelessWidget {
   const OrderView({super.key});
@@ -9,13 +10,12 @@ class OrderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<OrderViewModel>(context);
-    var nameController = viewModel.nameController;
+    var nameController = viewModel.descriptionController;
 
     return Column(
       children: [
-        TextFormField(controller: nameController),
-        StreamBuilder<Item>(
-          stream: viewModel.itemController,
+        StreamBuilder<Order>(
+          stream: viewModel.orderController,
           builder: (_, snapshot) {
             if (!snapshot.hasData) {
               return const Center(
@@ -24,7 +24,12 @@ class OrderView extends StatelessWidget {
             }
             return Center(
                 child: Column(
-              children: [Text(snapshot.requireData.description)],
+              children: [
+                TextButton(onPressed: () => viewModel.createItem(), child: const Text("Add Item")),
+                TextFormField(controller: nameController, textAlign: TextAlign.center),
+                const SizedBox(height: 20),
+                for (var x in snapshot.requireData.items) Text(x.description),
+              ],
             ));
           },
         ),
